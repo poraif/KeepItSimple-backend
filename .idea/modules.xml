@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/keepitsimple.iml" filepath="$PROJECT_DIR$/.idea/keepitsimple.iml" />
+      <module fileurl="file://$PROJECT_DIR$/keepitsimple/keepitsimple.iml" filepath="$PROJECT_DIR$/keepitsimple/keepitsimple.iml" />
     </modules>
   </component>
 </project>
