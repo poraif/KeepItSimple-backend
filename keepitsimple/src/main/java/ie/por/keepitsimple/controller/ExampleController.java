@@ -11,4 +11,15 @@ public String sayHello() {
     return "Hello World";
 }
 
+@GetMapping("/peter")
+    public String getPeter() {
+        return "Petaaa";
+    }
+
+
+@GetMapping("/emily")
+public String doEmily() {
+    return "emi";
 }
+}
+
