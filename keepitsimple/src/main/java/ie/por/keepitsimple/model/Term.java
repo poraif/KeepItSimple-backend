@@ -1,4 +1,4 @@
-package ie.por.keepitsimple;
+package ie.por.keepitsimple.model;
 
 public class Term {
 

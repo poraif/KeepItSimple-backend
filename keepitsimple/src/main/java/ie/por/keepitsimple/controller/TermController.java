@@ -1,6 +1,6 @@
 package ie.por.keepitsimple.controller;
 
-import ie.por.keepitsimple.Term;
+import ie.por.keepitsimple.model.Term;
 import ie.por.keepitsimple.service.TermService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,8 +15,8 @@ public class TermController {
     private TermService termService;
 
 @GetMapping("/")
-public List<Term> getAllDefinitions() {
-    return termService.getDefinitions();
+public List<Term> getAllTerms() {
+    return termService.getTerms();
 }
 
 @GetMapping("/peter")
