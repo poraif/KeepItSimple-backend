@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 public class TermCollection {
@@ -28,6 +29,10 @@ public class TermCollection {
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private Account account;
+
+    @ManyToMany
+    @JoinTable(name = "contains", joinColumns = @JoinColumn(name = "collection_id"), inverseJoinColumns = @JoinColumn(name = "term_id"))
+    private Set<TermCollection> collections;
 
     public Long getId() {
         return id;
@@ -76,5 +81,13 @@ public class TermCollection {
 
     public void setAccount(Account account) {
         this.account = account;
+    }
+
+    public Set<TermCollection> getCollections() {
+        return collections;
+    }
+
+    public void setCollections(Set<TermCollection> collections) {
+        this.collections = collections;
     }
 }

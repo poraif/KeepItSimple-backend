@@ -3,6 +3,7 @@ package ie.por.keepitsimple.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 public class TermVersion {
@@ -40,6 +41,10 @@ public class TermVersion {
 
     @Column(nullable = false, columnDefinition = "TIMESTAMP DEFAULT NOW()")
     private LocalDateTime dateAdded = LocalDateTime.now();
+
+    @ManyToMany
+    @JoinTable(name = "vote", joinColumns = @JoinColumn(name = "version_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private Set<Vote> votes;
 
     public int getId() {
         return id;

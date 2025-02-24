@@ -6,6 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Account {
@@ -40,6 +41,10 @@ public class Account {
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TermCollection> termCollections;
+
+    @ManyToMany
+    @JoinTable(name = "vote", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "version_id"))
+    private Set<Vote> votes;
 
     public void setId(Long id) {
         this.id = id;
@@ -92,5 +97,14 @@ public class Account {
     @PreUpdate
     public void setDateUpdated() {
         this.dateUpdated = LocalDateTime.now();
+    }
+
+
+    public Set<Vote> getVotes() {
+        return votes;
+    }
+
+    public void setVotes(Set<Vote> votes) {
+        this.votes = votes;
     }
 }

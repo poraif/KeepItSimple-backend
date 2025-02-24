@@ -6,7 +6,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Term {
@@ -31,6 +33,10 @@ public class Term {
     @ManyToOne
     @JoinColumn(name = "current_version_id", referencedColumnName = "id", nullable = true)
     private TermVersion currentVersion;
+
+    @ManyToMany
+    @JoinTable(name = "contains", joinColumns = @JoinColumn(name = "term_id"), inverseJoinColumns = @JoinColumn(name = "collection_id"))
+    private Set<TermCollection> collections;
 
     public int getId() {
         return id;
@@ -78,5 +84,13 @@ public class Term {
 
     public void setCurrentVersion(TermVersion currentVersion) {
         this.currentVersion = currentVersion;
+    }
+
+    public Set<TermCollection> getCollections() {
+        return collections;
+    }
+
+    public void setCollections(Set<TermCollection> collections) {
+        this.collections = collections;
     }
 }
