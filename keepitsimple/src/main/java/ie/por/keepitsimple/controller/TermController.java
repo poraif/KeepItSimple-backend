@@ -14,20 +14,6 @@ public class TermController {
     @Autowired
     private TermService termService;
 
-@GetMapping("/")
-public List<Term> getAllTerms() {
-    return termService.getTerms();
-}
 
-@GetMapping("/peter")
-    public String getPeter() {
-        return "Petaaa";
-    }
-
-
-@GetMapping("/emily")
-public String doEmily() {
-    return "emily";
-}
 }
 

@@ -5,9 +5,11 @@ import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 public class Account {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,22 +29,17 @@ public class Account {
     private String role;
 
     @Column
-    private LocalDateTime dateAdded;
+    private LocalDateTime dateAdded = LocalDateTime.now();
 
     @Column
     @DateTimeFormat(pattern = "dd-MM-yyyy") //for the serialisation output on frotend
     private LocalDateTime dateUpdated;
 
-//    @OneToMany(mappedBy = "account", cascade = CascadeType.PERSIST, orphanRemoval = true)
-//    private List<TermVersion> termVersions;
-//
-//    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Collection> collections;
+    @OneToMany(mappedBy = "account", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    private List<TermVersion> termVersions;
 
-    @PreUpdate
-    public void setLastUpdate() {
-        this.dateUpdated = LocalDateTime.now();
-    }
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TermCollection> termCollections;
 
     public void setId(Long id) {
         this.id = id;
@@ -92,7 +89,8 @@ public class Account {
         return dateUpdated;
     }
 
-    public void setDateUpdated(LocalDateTime dateUpdated) {
-        this.dateUpdated = dateUpdated;
+    @PreUpdate
+    public void setDateUpdated() {
+        this.dateUpdated = LocalDateTime.now();
     }
 }

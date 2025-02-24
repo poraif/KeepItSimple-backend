@@ -1,45 +1,43 @@
 package ie.por.keepitsimple.model;
 
+import jakarta.persistence.*;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
 public class Term {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Column(nullable = false, unique = true)
     private String name;
-    private String description;
-    private String codeSnippet;
-    private String topic;
 
-    public Term() {}
+    @Column(nullable = false)
+    private String category;
 
-    public Term(int id, String name, String description, String codeSnippet, String topic) {
+    @Column
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    private LocalDateTime dateUpdated = LocalDateTime.now();
+
+    @OneToMany(mappedBy = "term", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TermVersion> termVersions;
+
+    @ManyToOne
+    @JoinColumn(name = "current_version_id", referencedColumnName = "id", nullable = true)
+    private TermVersion currentVersion;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
         this.id = id;
-        this.name = name;
-        this.description = description;
-        this.codeSnippet = codeSnippet;
-        this.topic = topic;
-    }
-
-    public String getTopic() {
-        return topic;
-    }
-
-    public void setTopic(String topic) {
-        this.topic = topic;
-    }
-
-    public String getCodeSnippet() {
-        return codeSnippet;
-    }
-
-    public void setCodeSnippet(String codeSnippet) {
-        this.codeSnippet = codeSnippet;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public String getName() {
@@ -50,11 +48,35 @@ public class Term {
         this.name = name;
     }
 
-    public int getId() {
-        return id;
+    public String getCategory() {
+        return category;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public LocalDateTime getDateUpdated() {
+        return dateUpdated;
+    }
+
+    public void setDateUpdated(LocalDateTime dateUpdated) {
+        this.dateUpdated = dateUpdated;
+    }
+
+    public List<TermVersion> getTermVersions() {
+        return termVersions;
+    }
+
+    public void setTermVersions(List<TermVersion> termVersions) {
+        this.termVersions = termVersions;
+    }
+
+    public TermVersion getCurrentVersion() {
+        return currentVersion;
+    }
+
+    public void setCurrentVersion(TermVersion currentVersion) {
+        this.currentVersion = currentVersion;
     }
 }
