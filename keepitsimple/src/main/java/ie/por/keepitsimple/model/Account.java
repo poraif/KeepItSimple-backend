@@ -5,8 +5,6 @@ import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.List;
 
 @Entity
 public class Account {
@@ -29,11 +27,9 @@ public class Account {
     private String role;
 
     @Column
-    @Temporal(TemporalType.DATE)
     private LocalDateTime dateAdded;
 
     @Column
-    @Temporal(TemporalType.DATE)  //for the db storage
     @DateTimeFormat(pattern = "dd-MM-yyyy") //for the serialisation output on frotend
     private LocalDateTime dateUpdated;
 
