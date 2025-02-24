@@ -37,11 +37,11 @@ public class Account {
     @DateTimeFormat(pattern = "dd-MM-yyyy") //for the serialisation output on frotend
     private LocalDateTime dateUpdated;
 
-    @OneToMany(mappedBy = "account", cascade = CascadeType.PERSIST, orphanRemoval = true)
-    private List<TermVersion> termVersions;
-
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Collection> collections;
+//    @OneToMany(mappedBy = "account", cascade = CascadeType.PERSIST, orphanRemoval = true)
+//    private List<TermVersion> termVersions;
+//
+//    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Collection> collections;
 
     @PreUpdate
     public void setLastUpdate() {
