@@ -10,7 +10,7 @@ public class TermVersion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(nullable = false)
     private String shortDef;
@@ -32,25 +32,38 @@ public class TermVersion {
     private Account approvedBy;
 
     @ManyToOne
-    @JoinColumn(name = "term_id", referencedColumnName = "id", nullable = true)
+    @JoinColumn(name = "term_id", referencedColumnName = "id", nullable = false)
     private Term term;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = true)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = true) // true for llm generation
     private Account account;
 
-    @Column(nullable = false, columnDefinition = "TIMESTAMP DEFAULT NOW()")
+    @Column(nullable = false)
     private LocalDateTime dateAdded = LocalDateTime.now();
 
-    @ManyToMany
-    @JoinTable(name = "vote", joinColumns = @JoinColumn(name = "version_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+    @OneToMany(mappedBy = "termVersion", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Vote> votes;
 
-    public int getId() {
+    public TermVersion() {}
+
+    public TermVersion(String shortDef, String longDef, String codeSnippet, String exampleUsage, Boolean approved, Account approvedBy, Term term, Account account) {
+        this.shortDef = shortDef;
+        this.longDef = longDef;
+        this.codeSnippet = codeSnippet;
+        this.exampleUsage = exampleUsage;
+        this.approved = approved;
+        this.approvedBy = approvedBy;
+        this.term = term;
+        this.dateAdded = LocalDateTime.now();
+        this.account = account;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

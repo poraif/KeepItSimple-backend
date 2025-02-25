@@ -26,14 +26,14 @@ public class Account {
     private String password;
 
     @JsonIgnore
-    @Column(nullable = false, columnDefinition = "VARCHAR(255) DEFAULT 'editor'")
+    @Column(nullable = false)
     private String role;
 
     @Column
     private LocalDateTime dateAdded = LocalDateTime.now();
 
     @Column
-    @DateTimeFormat(pattern = "dd-MM-yyyy") //for the serialisation output on frotend
+    @DateTimeFormat(pattern = "dd-MM-yyyy") //for frontend
     private LocalDateTime dateUpdated;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.PERSIST, orphanRemoval = true)
@@ -42,36 +42,27 @@ public class Account {
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TermCollection> termCollections;
 
-    @ManyToMany
-    @JoinTable(name = "vote", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "version_id"))
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Vote> votes;
 
-    public void setId(Long id) {
-        this.id = id;
+    public Account() {
+    }
+
+    public Account(String username, String email, String password, String role, LocalDateTime dateAdded, LocalDateTime dateUpdated) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.role = role != null ? role : "editor";
+        this.dateAdded = dateAdded;
+        this.dateUpdated = dateUpdated;
     }
 
     public Long getId() {
         return id;
     }
 
-    public LocalDateTime getDateAdded() {
-        return dateAdded;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -82,6 +73,22 @@ public class Account {
         this.username = username;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public String getRole() {
         return role;
     }
@@ -90,15 +97,34 @@ public class Account {
         this.role = role;
     }
 
+    public LocalDateTime getDateAdded() {
+        return dateAdded;
+    }
+
     public LocalDateTime getDateUpdated() {
         return dateUpdated;
     }
 
     @PreUpdate
-    public void setDateUpdated() {
+    public void updateTimestamp() {
         this.dateUpdated = LocalDateTime.now();
     }
 
+    public List<TermVersion> getTermVersions() {
+        return termVersions;
+    }
+
+    public void setTermVersions(List<TermVersion> termVersions) {
+        this.termVersions = termVersions;
+    }
+
+    public List<TermCollection> getTermCollections() {
+        return termCollections;
+    }
+
+    public void setTermCollections(List<TermCollection> termCollections) {
+        this.termCollections = termCollections;
+    }
 
     public Set<Vote> getVotes() {
         return votes;

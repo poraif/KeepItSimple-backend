@@ -15,7 +15,7 @@ public class Term {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(nullable = false, unique = true)
     private String name;
@@ -38,11 +38,19 @@ public class Term {
     @JoinTable(name = "contains", joinColumns = @JoinColumn(name = "term_id"), inverseJoinColumns = @JoinColumn(name = "collection_id"))
     private Set<TermCollection> collections;
 
-    public int getId() {
+    public Term() {}
+
+    public Term(String name, String category, LocalDateTime dateUpdated) {
+        this.name = name;
+        this.category = category;
+        this.dateUpdated = dateUpdated;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

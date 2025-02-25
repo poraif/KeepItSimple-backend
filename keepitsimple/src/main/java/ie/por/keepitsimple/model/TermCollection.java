@@ -32,7 +32,17 @@ public class TermCollection {
 
     @ManyToMany
     @JoinTable(name = "contains", joinColumns = @JoinColumn(name = "collection_id"), inverseJoinColumns = @JoinColumn(name = "term_id"))
-    private Set<TermCollection> collections;
+    private Set<Term> terms;
+
+    public TermCollection() {}
+
+    public TermCollection(String name, String description, LocalDateTime dateAdded, LocalDateTime dateUpdated, Account account) {
+        this.name = name;
+        this.description = description;
+        this.dateAdded = dateAdded;
+        this.dateUpdated = dateUpdated;
+        this.account = account;
+    }
 
     public Long getId() {
         return id;
@@ -83,11 +93,11 @@ public class TermCollection {
         this.account = account;
     }
 
-    public Set<TermCollection> getCollections() {
-        return collections;
+    public Set<Term> getTerms() {
+        return terms;
     }
 
-    public void setCollections(Set<TermCollection> collections) {
-        this.collections = collections;
+    public void setTerms(Set<Term> terms) {
+        this.terms = terms;
     }
 }
