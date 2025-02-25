@@ -10,7 +10,8 @@ import java.util.Set;
 public class TermCollection {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "term_collection_id_seq")
+    @SequenceGenerator(name = "term_collection_id_seq", sequenceName = "term_collection_id_seq", allocationSize = 1)
     private Long id;
 
     @Column(nullable = false)
