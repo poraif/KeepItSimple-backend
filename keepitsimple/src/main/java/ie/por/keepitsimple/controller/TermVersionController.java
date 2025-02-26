@@ -15,7 +15,7 @@ public class TermVersionController {
     private TermVersionService termVersionService;
 
     @PostMapping(value="/termversions")
-    public void addTermVersion(@ModelAttribute AddTermVersionReqBody requestBody, @PathVariable Long id) {
+    public void addTermVersion(@RequestBody AddTermVersionReqBody requestBody, @PathVariable Long id) {
         termVersionService.add(requestBody, id);
     }
 

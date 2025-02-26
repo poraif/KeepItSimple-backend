@@ -19,13 +19,11 @@ public class TermVersionService {
 
     public void add(AddTermVersionReqBody requestBody, Long termId) {
         TermVersion termVersion = new TermVersion();
-        Term term = new Term();
-        termService.
         termVersion.setShortDef(requestBody.getShortDef());
         termVersion.setLongDef(requestBody.getLongDef());
         termVersion.setCodeSnippet(requestBody.getCodeSnippet());
         termVersion.setExampleUsage(requestBody.getExampleUsage());
-
+        termVersion.setTerm(termService.findTermById(termId));
         termVersionRepository.save(termVersion);
     }
 }

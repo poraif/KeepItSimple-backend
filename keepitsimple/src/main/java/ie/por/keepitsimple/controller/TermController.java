@@ -16,9 +16,14 @@ public class TermController {
     @Autowired
     private TermService termService;
 
-    @PostMapping(value="/term")
+    @PostMapping(value="/add")
     public void addTerm(@ModelAttribute AddTermReqBody requestBody) {
         termService.add(requestBody);
+    }
+
+    @GetMapping(value="/{id}")
+    public Term getTerm(@PathVariable Long id) {
+        return termService.findTermById(id);
     }
 
 
