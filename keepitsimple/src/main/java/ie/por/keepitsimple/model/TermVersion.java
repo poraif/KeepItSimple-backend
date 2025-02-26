@@ -48,16 +48,12 @@ public class TermVersion {
 
     public TermVersion() {}
 
-    public TermVersion(String shortDef, String longDef, String codeSnippet, String exampleUsage, Boolean approved, Account approvedBy, Term term, Account account) {
+    public TermVersion(String shortDef, String longDef, String codeSnippet, String exampleUsage, Term term) {
         this.shortDef = shortDef;
         this.longDef = longDef;
         this.codeSnippet = codeSnippet;
         this.exampleUsage = exampleUsage;
-        this.approved = approved;
-        this.approvedBy = approvedBy;
         this.term = term;
-        this.dateAdded = LocalDateTime.now();
-        this.account = account;
     }
 
     public Long getId() {
