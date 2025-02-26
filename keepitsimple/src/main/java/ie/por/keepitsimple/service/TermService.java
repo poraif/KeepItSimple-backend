@@ -3,13 +3,11 @@ package ie.por.keepitsimple.service;
 import ie.por.keepitsimple.model.Term;
 import ie.por.keepitsimple.repository.TermRepository;
 import ie.por.keepitsimple.requestbody.term.AddTermReqBody;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
+@Slf4j
 @Service
 public class TermService {
 
@@ -27,7 +25,7 @@ public class TermService {
         }
         else {
             Exception e = new Exception();
-
+            log.error("term exists in db", e);
         }
 
 
