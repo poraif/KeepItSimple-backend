@@ -8,7 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/term/{id}")
+@RequestMapping("api/term/{id}")
 public class TermVersionController {
 
     @Autowired
