@@ -50,6 +50,13 @@ public class Account {
     public Account() {
     }
 
+    public Account(String username, String email, String password, String role) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.role = role != null ? role : "editor";
+    }
+
     public Account(String username, String email, String password, String role, LocalDateTime dateAdded, LocalDateTime dateUpdated) {
         this.username = username;
         this.email = email;

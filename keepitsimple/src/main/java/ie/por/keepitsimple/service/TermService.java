@@ -35,9 +35,4 @@ public class TermService {
         return termRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Term not found: " + id));
     }
-
-
-
-
-
-    }
+}
