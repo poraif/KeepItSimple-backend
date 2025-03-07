@@ -1,42 +1,63 @@
 package ie.por.keepitsimple.ai;
 
-import ie.por.keepitsimple.requestbody.termversion.AddTermVersionReqBody;
-import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.chat.model.ChatModel;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ai.mistralai.MistralAiChatModel;
+import org.springframework.ai.mistralai.MistralAiChatOptions;
+import org.springframework.ai.mistralai.api.MistralAiApi;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.stringtemplate.v4.ST;
 
 import java.util.Map;
 
+@Slf4j
 @Service
 public class AiService {
 
-    private AddTermVersionReqBody addTermVersionReqBody;
+    private final MistralAiChatModel chatModel;
 
-    private ChatClient chatClient;
+    public AiService(@Value("${spring.ai.mistralai.api-key}") String apiKey) {
 
-    public AiService(ChatClient.Builder chatClientBuilder) {
-        this.chatClient = chatClientBuilder.build();
+        MistralAiApi mistralAiApi = new MistralAiApi(apiKey);
+        log.info("Mistral API Key: {}", apiKey);  // Log the API key (for debugging)
+        this.chatModel = new MistralAiChatModel(mistralAiApi, MistralAiChatOptions.builder()
+                .model(MistralAiApi.ChatModel.OPEN_MISTRAL_NEMO.getValue())
+                .temperature(0.2)
+                .maxTokens(500)
+                .build());
     }
 
-    @Value("classpath:/prompts/generateTermPrompt")
+
+    @Value("classpath:/prompts/generateTermPrompt.st")
     private Resource generatePrompt;
 
-    @Value("classpath:/prompts/checkTermPrompt")
+    @Value("classpath:/prompts/checkTermPrompt.st")
     private Resource checkPrompt;
 
-    public AddTermVersionReqBody generateTerm(String term) {
-        PromptTemplate promptTemplate = new PromptTemplate(generatePrompt);
+    public String generateTerm(String term) {
+        PromptTemplate promptTemplate = new PromptTemplate(
+                """
+                You are a dictionary for learner programmers or computer scientists. Your task is to provide short, jargon-free definitions for programming terms requested by the user inquiry after <<<>>>.
+                Ensure the response is clear, concise, and provides a response which includes a short definition (shortDef), long definition (longDef), code snippet (codeSnippet) and example usage (exampleUsage), in a strict json format.
+                You will respond with json. Do not provide explanations or notes outside of the json format.
+                <<<
+                Inquiry: {term}
+                >>>
+                """
+        );
+        System.out.println("prompt template: " + promptTemplate);
 
         Prompt prompt = promptTemplate.create(Map.of("term", term));
-        return this.chatClient.prompt(prompt)
-                .call()
-                .entity(AddTermVersionReqBody.class);
+        System.out.println("prompt: " + prompt);
+        ChatResponse response = chatModel.call(prompt);
+        System.out.println("response: " + response);
+        String result = response.getResult().getOutput().getText();
+        System.out.println("result: " + result);
+        return result;
     }
 
     public boolean checkTerm(String termName) {

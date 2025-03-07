@@ -3,6 +3,7 @@ package ie.por.keepitsimple.ai;
 import ie.por.keepitsimple.requestbody.termversion.AddTermVersionReqBody;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.model.ChatModel;
+import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,8 +21,8 @@ public class AiController {
     private AiService aiService;
 
     @GetMapping("generate-term")
-    public AddTermVersionReqBody generateTerm(@RequestParam String termName) {
-        return aiService.generateTerm(termName);
+    public String generateTerm(@RequestParam String term) {
+        return aiService.generateTerm(term);
     }
 
     @GetMapping("check-term")

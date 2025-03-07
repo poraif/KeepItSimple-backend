@@ -69,7 +69,12 @@ public class SecurityConfig {
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/account/**", "/api/term/find").permitAll()
+                        .requestMatchers("/api/account/**",
+                                        "/api/term/find",
+                                        "/v3/api-docs/**",
+                                        "/swagger-ui/**",
+                                        "/swagger-ui.html",
+                                        "/api/ai/**").permitAll()
                         // nb add specific role based bits here when roles are set up
                         .anyRequest().authenticated()
                 );
