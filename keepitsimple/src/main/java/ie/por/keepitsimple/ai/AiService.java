@@ -23,14 +23,12 @@ public class AiService {
     public AiService(@Value("${spring.ai.mistralai.api-key}") String apiKey) {
 
         MistralAiApi mistralAiApi = new MistralAiApi(apiKey);
-        log.info("Mistral API Key: {}", apiKey);  // Log the API key (for debugging)
         this.chatModel = new MistralAiChatModel(mistralAiApi, MistralAiChatOptions.builder()
                 .model(MistralAiApi.ChatModel.OPEN_MISTRAL_NEMO.getValue())
                 .temperature(0.2)
                 .maxTokens(500)
                 .build());
     }
-
 
     @Value("classpath:/prompts/generateTermPrompt.st")
     private Resource generatePrompt;
@@ -39,28 +37,19 @@ public class AiService {
     private Resource checkPrompt;
 
     public String generateTerm(String term) {
-        PromptTemplate promptTemplate = new PromptTemplate(
-                """
-                You are a dictionary for learner programmers or computer scientists. Your task is to provide short, jargon-free definitions for programming terms requested by the user inquiry after <<<>>>.
-                Ensure the response is clear, concise, and provides a response which includes a short definition (shortDef), long definition (longDef), code snippet (codeSnippet) and example usage (exampleUsage), in a strict json format.
-                You will respond with json. Do not provide explanations or notes outside of the json format.
-                <<<
-                Inquiry: {term}
-                >>>
-                """
-        );
-        System.out.println("prompt template: " + promptTemplate);
-
+        PromptTemplate promptTemplate = new PromptTemplate(generatePrompt);
         Prompt prompt = promptTemplate.create(Map.of("term", term));
-        System.out.println("prompt: " + prompt);
         ChatResponse response = chatModel.call(prompt);
-        System.out.println("response: " + response);
         String result = response.getResult().getOutput().getText();
-        System.out.println("result: " + result);
+        System.out.println(result);
         return result;
     }
 
-    public boolean checkTerm(String termName) {
-        return true;
+    public boolean checkTerm(String term) {
+        PromptTemplate promptTemplate = new PromptTemplate(checkPrompt);
+        Prompt prompt = promptTemplate.create(Map.of("term", term));
+        String response = chatModel.call(prompt).getResult().getOutput().getText();
+        System.out.println("response: " + response);
+        return response.equals("{\"isTerm\": true}");
     }
 }
