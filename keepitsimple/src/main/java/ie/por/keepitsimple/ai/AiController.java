@@ -26,8 +26,13 @@ public class AiController {
     }
 
     @GetMapping("check-term")
-    public boolean checkTerm(@RequestParam String termName) {
-        return aiService.checkTerm(termName);
+    public boolean checkTerm(@RequestParam String term) {
+        return aiService.checkTerm(term);
+    }
+
+    @GetMapping("generate-term-category")
+    public String generateTermCategory(@RequestParam String term) {
+        return aiService.generateTermCategory(term);
     }
 
 }
