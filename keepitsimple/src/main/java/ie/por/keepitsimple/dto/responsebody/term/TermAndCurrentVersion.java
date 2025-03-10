@@ -1,30 +1,55 @@
-package ie.por.keepitsimple.requestbody.termversion;
+package ie.por.keepitsimple.dto.responsebody.term;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 
-public class AddTermVersionReqBody {
+public class TermAndCurrentVersion {
 
-    @NotBlank(message = "add an ELI5 definition - 200 characters or less")
-    @Size(max = 200, message = "too long! Make it simpler")
+    public String name;
+
+    public String category;
+
     private String shortDef;
 
-    @NotBlank(message = "Expand on your short definition here")
     private String longDef;
 
     private String codeSnippet;
 
-    @NotBlank(message = "Suggest a real-world use case for using this")
     private String exampleUsage;
 
-    public AddTermVersionReqBody() {
+    public TermAndCurrentVersion() {
     }
 
-    public AddTermVersionReqBody(String shortDef, String longDef, String codeSnippet, String exampleUsage) {
+    public TermAndCurrentVersion(String name, String category, String shortDef, String longDef, String exampleUsage) {
+        this.name = name;
+        this.category = category;
+        this.shortDef = shortDef;
+        this.longDef = longDef;
+        this.exampleUsage = exampleUsage;
+    }
+
+    public TermAndCurrentVersion(String name, String category, String shortDef, String longDef, String codeSnippet, String exampleUsage) {
+        this.name = name;
+        this.category = category;
         this.shortDef = shortDef;
         this.longDef = longDef;
         this.codeSnippet = codeSnippet;
         this.exampleUsage = exampleUsage;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public String getShortDef() {
@@ -58,7 +83,4 @@ public class AddTermVersionReqBody {
     public void setExampleUsage(String exampleUsage) {
         this.exampleUsage = exampleUsage;
     }
-
-
-
 }

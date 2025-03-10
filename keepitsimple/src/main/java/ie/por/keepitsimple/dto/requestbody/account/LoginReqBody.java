@@ -1,20 +1,10 @@
-package ie.por.keepitsimple.requestbody.account;
+package ie.por.keepitsimple.dto.requestbody.account;
 
-public class SignupReqBody {
-
-    public String email;
+public class LoginReqBody {
 
     public String username;
 
     public String password;
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public String getUsername() {
         return username;

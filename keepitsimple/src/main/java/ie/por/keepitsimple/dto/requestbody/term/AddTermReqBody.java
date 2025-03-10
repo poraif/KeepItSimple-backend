@@ -1,4 +1,4 @@
-package ie.por.keepitsimple.requestbody.term;
+package ie.por.keepitsimple.dto.requestbody.term;
 
 import jakarta.validation.constraints.NotBlank;
 

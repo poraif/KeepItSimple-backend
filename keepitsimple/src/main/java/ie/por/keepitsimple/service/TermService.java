@@ -2,7 +2,7 @@ package ie.por.keepitsimple.service;
 
 import ie.por.keepitsimple.model.Term;
 import ie.por.keepitsimple.repository.TermRepository;
-import ie.por.keepitsimple.requestbody.term.AddTermReqBody;
+import ie.por.keepitsimple.dto.requestbody.term.AddTermReqBody;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,5 +34,13 @@ public class TermService {
     public Term findTermById(Long id) {
         return termRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Term not found: " + id));
+    }
+
+    public Term findTermByName(String term) {
+        return termRepository.findTermByName(term);
+    }
+
+    public Optional<TermAndCurrentVersion> searchTerm(String term) {
+
     }
 }
