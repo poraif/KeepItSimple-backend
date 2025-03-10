@@ -4,6 +4,7 @@ import ie.por.keepitsimple.dto.responsebody.term.TermAndCurrentVersion;
 import ie.por.keepitsimple.model.Term;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -12,7 +13,7 @@ public interface TermRepository extends JpaRepository<Term, Long> {
 
     @Query("""
     select 
-    term.name as term_name,
+    term.name as name,
     term.category as category,
     termVersion.shortDef as shortDef,
     termVersion.longDef as longDef,
@@ -23,7 +24,7 @@ public interface TermRepository extends JpaRepository<Term, Long> {
     where termVersion.approved = true
     and term.name = :name
     """)
-    public TermAndCurrentVersion getTermAndCurrentVersionByName(String name);
+    TermAndCurrentVersion getTermAndCurrentVersionByName(@Param("name")String name);
 
     public Term findTermByName(String name);
 
