@@ -1,6 +1,10 @@
 package ie.por.keepitsimple.ai;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import ie.por.keepitsimple.model.Term;
+import ie.por.keepitsimple.model.TermVersion;
 import ie.por.keepitsimple.repository.TermRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.model.ChatResponse;
@@ -9,6 +13,7 @@ import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.mistralai.MistralAiChatModel;
 import org.springframework.ai.mistralai.MistralAiChatOptions;
 import org.springframework.ai.mistralai.api.MistralAiApi;
+import org.springframework.ai.vectorstore.filter.FilterExpressionBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -16,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.stringtemplate.v4.ST;
 
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -26,7 +32,11 @@ public class AiService {
     @Autowired
     TermRepository termRepository;
 
-    public AiService(@Value("${spring.ai.mistralai.api-key}") String apiKey) {
+    @Autowired
+    private final ObjectMapper objectMapper;
+
+    public AiService(@Value("${spring.ai.mistralai.api-key}") String apiKey, ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
 
         MistralAiApi mistralAiApi = new MistralAiApi(apiKey);
         this.chatModel = new MistralAiChatModel(mistralAiApi, MistralAiChatOptions.builder()
@@ -45,13 +55,17 @@ public class AiService {
     @Value("classpath:/prompts/generateCategoryPrompt.st")
     private Resource generateCategoryPrompt;
 
-    public String generateTerm(String term) {
+    public TermVersion generateTermVersion(String term) {
         PromptTemplate promptTemplate = new PromptTemplate(generatePrompt);
         Prompt prompt = promptTemplate.create(Map.of("term", term));
         ChatResponse response = chatModel.call(prompt);
         String result = response.getResult().getOutput().getText();
         System.out.println(result);
-        return result;
+        try {
+            return objectMapper.readValue(result, TermVersion.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public boolean checkTerm(String term) {
@@ -60,10 +74,6 @@ public class AiService {
         String response = chatModel.call(prompt).getResult().getOutput().getText();
         System.out.println("response: " + response);
         if (response.equals("{\"isTerm\": true}")) {
-            Term newTerm = new Term();
-            newTerm.setName(term);
-            newTerm.setCategory(generateTermCategory(term));
-            termRepository.save(newTerm);
             return true;
         }
         return false;

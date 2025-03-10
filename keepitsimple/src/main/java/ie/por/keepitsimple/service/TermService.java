@@ -1,8 +1,12 @@
 package ie.por.keepitsimple.service;
 
+import ie.por.keepitsimple.ai.AiService;
+import ie.por.keepitsimple.dto.responsebody.term.TermAndCurrentVersion;
 import ie.por.keepitsimple.model.Term;
+import ie.por.keepitsimple.model.TermVersion;
 import ie.por.keepitsimple.repository.TermRepository;
 import ie.por.keepitsimple.dto.requestbody.term.AddTermReqBody;
+import ie.por.keepitsimple.repository.TermVersionRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +20,13 @@ public class TermService {
 
     @Autowired
     private TermRepository termRepository;
+
+    @Autowired
+    private AiService aiService;
+
+    @Autowired
+    private TermVersionRepository termVersionRepository;
+
 
 
     public void add(AddTermReqBody requestBody) {
@@ -36,11 +47,27 @@ public class TermService {
                 .orElseThrow(() -> new EntityNotFoundException("Term not found: " + id));
     }
 
-    public Term findTermByName(String term) {
-        return termRepository.findTermByName(term);
+    public TermAndCurrentVersion findTermAndCurrentVersionByName(String term) {
+        return termRepository.getTermAndCurrentVersionByName(term);
     }
 
     public Optional<TermAndCurrentVersion> searchTerm(String term) {
-
-    }
-}
+        Term foundTerm = termRepository.findTermByName(term);
+        if (foundTerm != null) {
+            return Optional.of(termRepository.getTermAndCurrentVersionByName(term));
+        }
+            boolean isValidTerm = aiService.checkTerm(term);
+            if (!isValidTerm) {
+                log.error("Looks like not a valid term");
+                return Optional.empty();
+            }
+                Term newTerm = new Term();
+                newTerm.setName(term);
+                newTerm.setCategory(aiService.generateTermCategory(term));
+                TermVersion newTermVersion = aiService.generateTermVersion(term);
+                newTermVersion.setApproved(true);
+                newTerm.setCurrentVersion(newTermVersion);
+                termRepository.save(newTerm);
+                return Optional.of(termRepository.getTermAndCurrentVersionByName(term));
+            }
+        }
