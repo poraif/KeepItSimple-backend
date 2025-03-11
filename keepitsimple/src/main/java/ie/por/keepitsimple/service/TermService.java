@@ -64,10 +64,18 @@ public class TermService {
                 Term newTerm = new Term();
                 newTerm.setName(term);
                 newTerm.setCategory(aiService.generateTermCategory(term));
+                termRepository.save(newTerm);
+                System.out.println("New term: " + newTerm);
+
                 TermVersion newTermVersion = aiService.generateTermVersion(term);
                 newTermVersion.setApproved(true);
+                newTermVersion.setTerm(newTerm);
+                termVersionRepository.save(newTermVersion);
+                System.out.println("New term version: " + newTermVersion);
+
                 newTerm.setCurrentVersion(newTermVersion);
                 termRepository.save(newTerm);
+
                 return Optional.of(termRepository.getTermAndCurrentVersionByName(term));
             }
         }
