@@ -13,16 +13,16 @@ public class TermVersion {
     @SequenceGenerator(name = "term_version_id_seq", sequenceName = "term_version_id_seq", allocationSize = 1)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String shortDef;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String longDef;
 
-    @Column
+    @Column (columnDefinition = "TEXT")
     private String codeSnippet;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String exampleUsage;
 
     @Column(nullable = false)
