@@ -15,13 +15,13 @@ public class TermVersionService {
     @Autowired
     private TermService termService;
 
-    public void add(AddTermVersionReqBody requestBody, Long termId) {
+    public void add(AddTermVersionReqBody requestBody, String termName) {
         TermVersion termVersion = new TermVersion();
         termVersion.setShortDef(requestBody.getShortDef());
         termVersion.setLongDef(requestBody.getLongDef());
         termVersion.setCodeSnippet(requestBody.getCodeSnippet());
         termVersion.setExampleUsage(requestBody.getExampleUsage());
-        termVersion.setTerm(termService.findTermById(termId));
+        termVersion.setTerm(termService.findTermByName(termName));
         termVersionRepository.save(termVersion);
     }
 }

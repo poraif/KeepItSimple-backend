@@ -51,6 +51,10 @@ public class TermService {
         return termRepository.getTermAndCurrentVersionByName(term);
     }
 
+    public Term findTermByName(String name) {
+        return termRepository.findTermByName(name);
+    }
+
     public Optional<TermAndCurrentVersion> searchTerm(String term) {
         Term foundTerm = termRepository.findTermByName(term);
         if (foundTerm != null) {

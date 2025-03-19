@@ -13,8 +13,8 @@ public class TermVersionController {
     private TermVersionService termVersionService;
 
     @PostMapping(value="/termversions")
-    public void addTermVersion(@RequestBody AddTermVersionReqBody requestBody, @PathVariable Long id) {
-        termVersionService.add(requestBody, id);
+    public void addTermVersion(@RequestBody AddTermVersionReqBody requestBody, @PathVariable String name) {
+        termVersionService.add(requestBody, name);
     }
 
 
