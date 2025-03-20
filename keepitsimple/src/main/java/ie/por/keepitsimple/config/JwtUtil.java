@@ -1,6 +1,8 @@
 package ie.por.keepitsimple.config;
 
 
+import ie.por.keepitsimple.model.Account;
+import ie.por.keepitsimple.repository.AccountRepository;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,12 +17,17 @@ import io.jsonwebtoken.*;
 @Component
 public class JwtUtil {
 
+    private final AccountRepository accountRepository;
     @Value("${jwt.secret}")
     private String jwtSecret;
 
     private int jwtExpiration;
 
     private SecretKey secretKey;
+
+    public JwtUtil(AccountRepository accountRepository) {
+        this.accountRepository = accountRepository;
+    }
 
     @PostConstruct
     public void init() {
@@ -29,11 +36,14 @@ public class JwtUtil {
 
     // Generate JWT token
     public String generateToken(String username) {
+        Account account = accountRepository.findByUsername(username);
+        String role = "ROLE_" + account.getRole().toUpperCase();
         return Jwts.builder()
-                .setSubject(username)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() + jwtExpiration))
-                .signWith(secretKey, SignatureAlgorithm.HS256)
+                .subject(username)
+                .issuedAt(new Date())
+                .expiration(new Date((new Date()).getTime() + jwtExpiration))
+                .claim("role", role)
+                .signWith(secretKey)
                 .compact();
     }
 
