@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface TermRepository extends JpaRepository<Term, Long> {
 
@@ -27,5 +29,10 @@ public interface TermRepository extends JpaRepository<Term, Long> {
     TermAndCurrentVersion getTermAndCurrentVersionByName(@Param("name")String name);
 
     public Term findTermByName(String name);
+
+    @Query("""
+    select t.name from Term t order by t.name desc
+    """)
+    List<String> findAllTermNames();
 
 }
