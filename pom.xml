@@ -157,11 +157,9 @@
 			<artifactId>spring-security-oauth2-jose</artifactId>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/org.springframework.ai/spring-ai-mistral-ai-spring-boot-starter -->
 		<dependency>
 			<groupId>org.springframework.ai</groupId>
-			<artifactId>spring-ai-mistral-ai-spring-boot-starter</artifactId>
-			<version>1.0.0-M6</version>
+			<artifactId>spring-ai-starter-model-mistral-ai</artifactId>
 		</dependency>
 
 	</dependencies>

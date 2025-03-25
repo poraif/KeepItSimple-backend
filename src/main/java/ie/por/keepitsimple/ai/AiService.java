@@ -43,14 +43,14 @@ public class AiService {
         this.objectMapper = objectMapper;
 
 
-
+        MistralAiChatOptions options = new MistralAiChatOptions();
+        options.setModel("open-mistral-nemo");
+        options.setMaxTokens(500);
+        options.setTemperature(0.2);
 
         MistralAiApi mistralAiApi = new MistralAiApi(apiKey);
-        this.chatModel = new MistralAiChatModel(mistralAiApi, MistralAiChatOptions.builder()
-                .model(MistralAiApi.ChatModel.OPEN_MISTRAL_NEMO.getValue())
-                .temperature(0.2)
-                .maxTokens(500)
-                .build(), ToolCallingManager.builder().build(), RetryTemplate.defaultInstance(), ObservationRegistry.create());
+
+        this.chatModel = new MistralAiChatModel(mistralAiApi, MistralAiChatOptions.fromOptions(options), ToolCallingManager.builder().build(), RetryTemplate.defaultInstance(), ObservationRegistry.create());
     }
 
 
