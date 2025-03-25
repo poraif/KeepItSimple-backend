@@ -120,18 +120,6 @@ public class TermService {
         termVersionRepository.save(termVersion);
         foundTerm.setCurrentVersion(termVersion);
         termRepository.save(foundTerm);
+        log.info("Termversion added: {}", termVersion);
     }
-
-//    private static TermVersion getTermVersion(AddTermAndVersionReqBody requestBody, Term foundTerm, Account account) {
-//        TermVersion termVersion = new TermVersion();
-//        termVersion.setTerm(foundTerm);
-//        termVersion.setShortDef(requestBody.getShortDef());
-//        termVersion.setLongDef(requestBody.getLongDef());
-//        termVersion.setCodeSnippet(requestBody.getCodeSnippet());
-//        termVersion.setExampleUsage(requestBody.getExampleUsage());
-//        termVersion.setApproved(true);
-//        termVersion.setAccount(account);
-//        termVersion.setApprovedBy(account);
-//        return termVersion;
-//    }
 }

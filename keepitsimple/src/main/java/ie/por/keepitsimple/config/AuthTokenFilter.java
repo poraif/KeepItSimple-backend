@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-import ie.por.keepitsimple.config.JwtUtil;
 
 import javax.crypto.SecretKey;
 
