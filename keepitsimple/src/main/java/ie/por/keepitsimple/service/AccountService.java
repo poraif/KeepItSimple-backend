@@ -57,4 +57,8 @@ public class AccountService {
         return token;
     }
 
+    public Account findAccountByUsername(String username) {
+        return accountRepository.findByUsername(username);
+    }
+
 }

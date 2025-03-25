@@ -69,13 +69,12 @@ public class SecurityConfig {
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/account/**",
-                                        "/api/term/**",
-                                        "/v3/api-docs/**",
-                                        "/swagger-ui/**",
-                                        "/swagger-ui.html",
-                                        "/api/ai/**").permitAll()
-                        // nb add specific role based bits here when roles are set up
+                        .requestMatchers("/api/account/login", "/api/account/signup").permitAll()
+                        .requestMatchers("/api/term/**",
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/api/ai/**").hasAnyRole("ADMIN", "EDITOR", "SUPERUSER")
                         .anyRequest().authenticated()
                 );
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
@@ -86,7 +85,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(Arrays.asList("http://localhost:8080", "http://localhost:5173", "http://localhost:5174"));
+        config.setAllowedOrigins(Arrays.asList("http://localhost:8080", "http://localhost:5174", "http://localhost:5173"));
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(Arrays.asList("*"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
