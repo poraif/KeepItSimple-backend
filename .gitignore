@@ -32,7 +32,6 @@ build/
 ### env files ###
 .env
 env.properties
-application.properties
 application.yml
 
 ### heroku ###
