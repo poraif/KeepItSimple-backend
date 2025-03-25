@@ -3,6 +3,7 @@ package ie.por.keepitsimple.service;
 import ie.por.keepitsimple.ai.AiService;
 import ie.por.keepitsimple.dto.requestbody.term.AddTermAndVersionReqBody;
 import ie.por.keepitsimple.dto.responsebody.term.TermAndCurrentVersion;
+import ie.por.keepitsimple.model.Account;
 import ie.por.keepitsimple.model.Term;
 import ie.por.keepitsimple.model.TermVersion;
 import ie.por.keepitsimple.repository.TermRepository;
@@ -29,7 +30,8 @@ public class TermService {
 
     @Autowired
     private TermVersionRepository termVersionRepository;
-
+    @Autowired
+    private AccountService accountService;
 
 
     public void add(AddTermReqBody requestBody) {
@@ -56,10 +58,6 @@ public class TermService {
 
     public TermAndCurrentVersion findTermAndCurrentVersionByName(String term) {
         return termRepository.getTermAndCurrentVersionByName(term);
-    }
-
-    public Term findTermByName(String name) {
-        return termRepository.findTermByName(name);
     }
 
     public Optional<TermAndCurrentVersion> searchTerm(String term) {
@@ -99,8 +97,10 @@ public class TermService {
         return termNames;
     }
 
-    public void addTermAndVersion(AddTermAndVersionReqBody requestBody) {
+    public void addTermAndVersion(AddTermAndVersionReqBody requestBody, String username) {
         Term foundTerm = termRepository.findTermByName(requestBody.getName());
+        Account account = accountService.findAccountByUsername(username);
+
         if (foundTerm == null) {
             foundTerm = new Term();
             foundTerm.setName(requestBody.getName());
@@ -108,6 +108,30 @@ public class TermService {
             termRepository.save(foundTerm);
             log.info("Term added: {}", foundTerm);
         }
-
+        TermVersion termVersion = new TermVersion();
+        termVersion.setTerm(foundTerm);
+        termVersion.setShortDef(requestBody.getShortDef());
+        termVersion.setLongDef(requestBody.getLongDef());
+        termVersion.setCodeSnippet(requestBody.getCodeSnippet());
+        termVersion.setExampleUsage(requestBody.getExampleUsage());
+        termVersion.setApproved(true);
+        termVersion.setAccount(account);
+        termVersion.setApprovedBy(account);
+        termVersionRepository.save(termVersion);
+        foundTerm.setCurrentVersion(termVersion);
+        termRepository.save(foundTerm);
     }
+
+//    private static TermVersion getTermVersion(AddTermAndVersionReqBody requestBody, Term foundTerm, Account account) {
+//        TermVersion termVersion = new TermVersion();
+//        termVersion.setTerm(foundTerm);
+//        termVersion.setShortDef(requestBody.getShortDef());
+//        termVersion.setLongDef(requestBody.getLongDef());
+//        termVersion.setCodeSnippet(requestBody.getCodeSnippet());
+//        termVersion.setExampleUsage(requestBody.getExampleUsage());
+//        termVersion.setApproved(true);
+//        termVersion.setAccount(account);
+//        termVersion.setApprovedBy(account);
+//        return termVersion;
+//    }
 }

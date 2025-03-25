@@ -7,6 +7,7 @@ import ie.por.keepitsimple.model.Term;
 import ie.por.keepitsimple.dto.requestbody.term.AddTermReqBody;
 import ie.por.keepitsimple.service.TermService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,13 +21,14 @@ public class TermController {
     private TermService termService;
 
     @PostMapping(value="/add")
-    public void addTerm(@ModelAttribute AddTermReqBody requestBody) {
+    public void addTerm(@RequestBody AddTermReqBody requestBody) {
         termService.add(requestBody);
     }
 
     @PostMapping(value="/addtermandversion")
-    public void addTermAndVersion(@ModelAttribute AddTermAndVersionReqBody requestBody) {
-        termService.addTermAndVersion(requestBody);
+    public void addTermAndVersion(@RequestBody AddTermAndVersionReqBody requestBody) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        termService.addTermAndVersion(requestBody, username);
     }
 
 
