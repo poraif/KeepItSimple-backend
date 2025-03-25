@@ -1,8 +1,8 @@
 HELP.md
 target/
+build/
+
 !.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
 
 ### STS ###
 .apt_generated
@@ -14,7 +14,7 @@ target/
 .sts4-cache
 
 ### IntelliJ IDEA ###
-.idea
+.idea/
 *.iws
 *.iml
 *.ipr
@@ -25,18 +25,20 @@ target/
 /dist/
 /nbdist/
 /.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
 
 ### VS Code ###
 .vscode/
 
+### env files ###
+.env
 env.properties
 application.properties
+application.yml
 
+### heroku ###
 .heroku/
 
+### logs ###
 *.log
 /logs/
 /hs_err_pid*
