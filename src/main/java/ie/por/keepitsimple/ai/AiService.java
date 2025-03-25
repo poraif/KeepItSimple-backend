@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import ie.por.keepitsimple.model.Term;
 import ie.por.keepitsimple.model.TermVersion;
 import ie.por.keepitsimple.repository.TermRepository;
+import io.micrometer.observation.ObservationRegistry;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
@@ -13,11 +14,14 @@ import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.mistralai.MistralAiChatModel;
 import org.springframework.ai.mistralai.MistralAiChatOptions;
 import org.springframework.ai.mistralai.api.MistralAiApi;
+import org.springframework.ai.model.tool.ToolCallingManager;
 import org.springframework.ai.vectorstore.filter.FilterExpressionBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
+import org.springframework.retry.support.RetryTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import org.stringtemplate.v4.ST;
 
 import java.util.Map;
@@ -38,13 +42,19 @@ public class AiService {
     public AiService(@Value("${spring.ai.mistralai.api-key}") String apiKey, ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
 
+
+
+
         MistralAiApi mistralAiApi = new MistralAiApi(apiKey);
         this.chatModel = new MistralAiChatModel(mistralAiApi, MistralAiChatOptions.builder()
                 .model(MistralAiApi.ChatModel.OPEN_MISTRAL_NEMO.getValue())
                 .temperature(0.2)
                 .maxTokens(500)
-                .build());
+                .build(), ToolCallingManager.builder().build(), RetryTemplate.defaultInstance(), ObservationRegistry.create());
     }
+
+
+
 
     @Value("classpath:/prompts/generateTermPrompt.st")
     private Resource generatePrompt;
