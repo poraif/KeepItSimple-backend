@@ -61,32 +61,57 @@ public class TermService {
     }
 
     public Optional<TermAndCurrentVersion> searchTerm(String term) {
+        // Log the incoming search term
+        log.info("Searching for term: {}", term);
+
         Term foundTerm = termRepository.findTermByName(term);
         if (foundTerm != null) {
+            // Log when a term is found
+            log.info("Term found: {}", foundTerm.getName());
             return Optional.of(termRepository.getTermAndCurrentVersionByName(term));
         }
-            boolean isValidTerm = aiService.checkTerm(term);
-            if (!isValidTerm) {
-                log.error("Looks like not a valid term");
-                return Optional.empty();
-            }
-                Term newTerm = new Term();
-                newTerm.setName(term);
-                newTerm.setCategory(aiService.generateTermCategory(term));
-                termRepository.save(newTerm);
-                System.out.println("New term: " + newTerm);
 
-                TermVersion newTermVersion = aiService.generateTermVersion(term);
-                newTermVersion.setApproved(true);
-                newTermVersion.setTerm(newTerm);
-                termVersionRepository.save(newTermVersion);
-                System.out.println("New term version: " + newTermVersion);
+        // Log that we are checking if the term is valid
+        log.info("Term not found, checking if it's a valid term: {}", term);
 
-                newTerm.setCurrentVersion(newTermVersion);
-                termRepository.save(newTerm);
+        boolean isValidTerm = aiService.checkTerm(term);
+        if (!isValidTerm) {
+            // Log when the term is invalid
+            log.error("Term '{}' is not valid according to AI service", term);
+            return Optional.empty();
+        }
 
-                return Optional.of(termRepository.getTermAndCurrentVersionByName(term));
-            }
+        // Log that a new term is being created
+        log.info("Creating new term for: {}", term);
+
+        Term newTerm = new Term();
+        newTerm.setName(term);
+        newTerm.setCategory(aiService.generateTermCategory(term));
+
+        // Log the category of the new term
+        log.info("Generated category for new term: {}", newTerm.getCategory());
+
+        termRepository.save(newTerm);
+        log.info("Saved new term: {}", newTerm);
+
+        TermVersion newTermVersion = aiService.generateTermVersion(term);
+        newTermVersion.setApproved(true);
+        newTermVersion.setTerm(newTerm);
+
+        // Log the new term version
+        log.info("Generated new term version: {}", newTermVersion);
+
+        termVersionRepository.save(newTermVersion);
+        log.info("Saved new term version: {}", newTermVersion);
+
+        // Set the current version for the term and log it
+        newTerm.setCurrentVersion(newTermVersion);
+        termRepository.save(newTerm);
+        log.info("Updated term '{}' with new version: {}", term, newTermVersion);
+
+        // Return the term and current version
+        return Optional.of(termRepository.getTermAndCurrentVersionByName(term));
+    }
 
     public List<String> getAllTermNames() {
         List<String> termNames = termRepository.findAllTermNames();
