@@ -81,7 +81,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(Arrays.asList("http://localhost:8080", "http://localhost:5174", "http://localhost:5173", "https://keepitsimple-82e5d4856f93.herokuapp.com", "https://keep-it-simple.vercel.app", "https://keep-it-simple-frontend.vercel.app"));
+        config.setAllowedOrigins(Arrays.asList("http://localhost:8080", "http://localhost:5174", "http://localhost:5173", "https://keep-it-simple.vercel.app", "https://keep-it-simple-frontend.vercel.app"));
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(Arrays.asList("*"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -89,3 +89,5 @@ public class SecurityConfig {
         return source;
     }
 }
+
+//"https://keepitsimple-82e5d4856f93.herokuapp.com",
