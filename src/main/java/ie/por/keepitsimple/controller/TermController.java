@@ -8,8 +8,6 @@ import ie.por.keepitsimple.dto.requestbody.term.AddTermReqBody;
 import ie.por.keepitsimple.service.TermService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,21 +41,8 @@ public class TermController {
     }
 
     @GetMapping(value="/search")
-    public ResponseEntity<TermAndCurrentVersion> searchTerm(@RequestParam String term) {
-        log.info("Received search request for term: {}", term);
-        try {
-            Optional<TermAndCurrentVersion> result = termService.searchTerm(term);
-            if (result.isPresent()) {
-                log.info("Search successful for term: {}", term);
-                return ResponseEntity.ok(result.get());
-            } else {
-                log.error("Term not found: {}", term);
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-            }
-        } catch (Exception e) {
-            log.error("Error during search for term: {}", term, e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+    public Optional<TermAndCurrentVersion> searchTerm(@RequestParam String term) {
+        return termService.searchTerm(term);
     }
 
     @GetMapping(value="/terms")
