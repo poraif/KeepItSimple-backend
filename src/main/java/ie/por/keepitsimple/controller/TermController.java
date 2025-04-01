@@ -38,7 +38,7 @@ public class TermController {
         return termService.findTermById(id);
     }
 
-    @GetMapping(value="/search/")
+    @GetMapping(value="/search")
     public Optional<TermAndCurrentVersion> searchTerm(@RequestParam String term) {
         return termService.searchTerm(term);
     }
