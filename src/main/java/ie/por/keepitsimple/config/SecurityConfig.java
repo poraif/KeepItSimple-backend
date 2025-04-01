@@ -69,7 +69,7 @@ public class SecurityConfig {
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/account/login", "/api/account/signup", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/api/term/search**", "/api/term/search*", "/api/term/search/**","/api/term/{id}").permitAll()
+                        .requestMatchers("/api/account/login", "/api/account/signup", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/api/term/search**", "/api/term/search*", "/api/term/search/**", "/api/term/search","/api/term/search/","/api/term/{id}").permitAll()
                         .requestMatchers("/api/term/terms", "/api/ai/**", "/api/term/add", "api/term/addtermandversion").hasAnyRole("ADMIN", "EDITOR", "SUPERUSER")
                         .anyRequest().authenticated()
                 );
@@ -81,7 +81,15 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(Arrays.asList("http://localhost:8080", "http://localhost:5174", "http://localhost:5173", "https://keep-it-simple.vercel.app", "https://keep-it-simple-frontend.vercel.app"));
+        config.setAllowedOrigins(Arrays.asList("http://localhost:5174",
+                                                "http://localhost:5173",
+                                                "https://keep-it-simple.vercel.app",
+                                                "https://keep-it-simple-frontend.vercel.app",
+                                                "http://keep-it-simple.vercel.app",
+                                                "http://keep-it-simple-frontend.vercel.app",
+                                                "https://keep-it-simple-frontend-7m5wsuznp-peadars-projects.vercel.app/",
+                                                "https://keep-it-simple-frontend-git-main-peadars-projects.vercel.app/"
+                ));
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(Arrays.asList("*"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -89,5 +97,3 @@ public class SecurityConfig {
         return source;
     }
 }
-
-//"https://keepitsimple-82e5d4856f93.herokuapp.com",
