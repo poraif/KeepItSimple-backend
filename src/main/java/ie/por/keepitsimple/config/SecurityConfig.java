@@ -69,7 +69,9 @@ public class SecurityConfig {
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .anyRequest().permitAll()
+                        .requestMatchers("/api/account/login", "/api/account/signup", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/api/term/search**", "/api/term/search*", "/api/term/search/**", "/api/term/search","/api/term/search/","/api/term/{id}").permitAll()
+                        .requestMatchers("/api/term/terms", "/api/ai/**", "/api/term/add", "api/term/addtermandversion").hasAnyRole("ADMIN", "EDITOR", "SUPERUSER")
+                        .anyRequest().authenticated()
                 );
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
