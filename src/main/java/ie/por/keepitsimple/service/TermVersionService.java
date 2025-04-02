@@ -2,10 +2,16 @@ package ie.por.keepitsimple.service;
 
 import ie.por.keepitsimple.model.Term;
 import ie.por.keepitsimple.model.TermVersion;
+import ie.por.keepitsimple.repository.TermRepository;
 import ie.por.keepitsimple.repository.TermVersionRepository;
 import ie.por.keepitsimple.dto.requestbody.termversion.AddTermVersionReqBody;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TermVersionService {
@@ -15,6 +21,8 @@ public class TermVersionService {
 
     @Autowired
     private TermService termService;
+    @Autowired
+    private TermRepository termRepository;
 
     public void add(AddTermVersionReqBody requestBody, String name) {
         TermVersion termVersion = new TermVersion();
@@ -28,16 +36,16 @@ public class TermVersionService {
         termVersionRepository.save(termVersion);
     }
 
-    public void updateTermVersion(AddTermVersionReqBody requestBody, String username, String name, Long id) throws Exception {
+    public void updateTermVersion(AddTermVersionReqBody requestBody, String name, Long id) throws Exception {
         TermVersion termVersion = termVersionRepository.getTermVersionById(id);
-
+        System.out.println(termVersion);
         if (termVersion == null) {
             throw new Exception("no term version returned from id");
         }
 
-        if (!termVersion.getAccount().getUsername().equals(username)) {
-            throw new Exception("wrong user");
-        }
+//        if (!termVersion.getAccount().getUsername().equals(username)) {
+//            throw new Exception("wrong user");
+//        }
 
         if (!(termVersion.getTerm().getName().equals(name))) {
             throw new Exception("The term version doesnt match the term");
@@ -50,8 +58,10 @@ public class TermVersionService {
         termVersionRepository.save(termVersion);
     }
 
-    public void deleteTermVersion(Long id, String name, String username) throws Exception {
+    @Transactional
+    public void deleteTermVersion(Long id, String username, String name) throws Exception {
         TermVersion termVersion = termVersionRepository.getTermVersionById(id);
+        Term term = termService.findTermByName(name);
         if (termVersion == null) {
             throw new Exception("no term version returned from id");
         }
@@ -61,6 +71,13 @@ public class TermVersionService {
         if (!(termVersion.getTerm().getName().equals(name))) {
             throw new Exception("The term version doesnt match the term");
         }
+        termVersionRepository.flush();
         termVersionRepository.delete(termVersion);
+        Optional<TermVersion> newTermVersion = termVersionRepository.findTermVersionByTermAndHighestVote(name);
+        if (newTermVersion.isPresent()) {
+            term.setCurrentVersion(newTermVersion.get());
+            termRepository.save(term);
+        }
+
     }
 }

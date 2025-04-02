@@ -28,7 +28,7 @@ public class Term {
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDateTime dateUpdated = LocalDateTime.now();
 
-    @OneToMany(mappedBy = "term", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "term", cascade = CascadeType.MERGE, orphanRemoval = true)
     private List<TermVersion> termVersions;
 
     @ManyToOne

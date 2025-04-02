@@ -1,10 +1,13 @@
 package ie.por.keepitsimple.controller;
 
 import ie.por.keepitsimple.dto.requestbody.termversion.AddTermVersionReqBody;
+import ie.por.keepitsimple.model.Term;
 import ie.por.keepitsimple.service.TermVersionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/term/{name}")
@@ -18,10 +21,10 @@ public class TermVersionController {
         termVersionService.add(requestBody, name);
     }
 
-    @PutMapping(value="/termversion/{id}/edit")
+    @PutMapping(value="/termversion/{id}/update")
     public void updateTermVersion(@RequestBody AddTermVersionReqBody requestBody, @PathVariable Long id, @PathVariable String name) throws Exception {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        termVersionService.updateTermVersion(requestBody, username, name, id);
+//        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        termVersionService.updateTermVersion(requestBody, name, id);
     }
 
     @DeleteMapping(value="/termversion/{id}/delete")

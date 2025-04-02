@@ -22,7 +22,7 @@ public interface TermRepository extends JpaRepository<Term, Long> {
     termVersion.longDef as longDef,
     termVersion.codeSnippet as codeSnippet,
     termVersion.exampleUsage as exampleUsage,
-    termVersion.id as versionId
+    termVersion.id as id
     from Term term
     join term.currentVersion termVersion
     join termVersion.account account
