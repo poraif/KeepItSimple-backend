@@ -21,7 +21,8 @@ public interface TermRepository extends JpaRepository<Term, Long> {
     termVersion.shortDef as shortDef,
     termVersion.longDef as longDef,
     termVersion.codeSnippet as codeSnippet,
-    termVersion.exampleUsage as exampleUsage
+    termVersion.exampleUsage as exampleUsage,
+    termVersion.id as versionId
     from Term term
     join term.currentVersion termVersion
     join termVersion.account account

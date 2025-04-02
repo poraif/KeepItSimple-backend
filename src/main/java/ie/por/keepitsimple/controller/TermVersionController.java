@@ -24,7 +24,7 @@ public class TermVersionController {
         termVersionService.updateTermVersion(requestBody, username, name, id);
     }
 
-    @DeleteMapping(value="/termversion/{id}/edit")
+    @DeleteMapping(value="/termversion/{id}/delete")
     public void deleteTermVersion(@PathVariable String name, @PathVariable Long id) throws Exception {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         termVersionService.deleteTermVersion(id, username, name);
