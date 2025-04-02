@@ -3,6 +3,7 @@ package ie.por.keepitsimple.controller;
 import ie.por.keepitsimple.dto.requestbody.termversion.AddTermVersionReqBody;
 import ie.por.keepitsimple.service.TermVersionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,6 +16,12 @@ public class TermVersionController {
     @PostMapping(value="/termversions")
     public void addTermVersion(@RequestBody AddTermVersionReqBody requestBody, @PathVariable String name) {
         termVersionService.add(requestBody, name);
+    }
+
+    @PutMapping(value="/termversion/{id}/edit")
+    public void updateTermVersion(@RequestBody AddTermVersionReqBody requestBody, @PathVariable Long id, @PathVariable String name) throws Exception {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        termVersionService.updateTermVersion(requestBody, username, name, id);
     }
 
 

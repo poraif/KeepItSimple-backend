@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 public interface TermVersionRepository extends JpaRepository<TermVersion, Long> {
 
 
+    TermVersion getTermVersionById(Long id);
 }

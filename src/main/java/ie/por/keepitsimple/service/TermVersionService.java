@@ -27,4 +27,26 @@ public class TermVersionService {
 
         termVersionRepository.save(termVersion);
     }
+
+    public void updateTermVersion(AddTermVersionReqBody requestBody, String username, String name, Long id) throws Exception {
+        TermVersion termVersion = termVersionRepository.getTermVersionById(id);
+
+        if (termVersion == null) {
+            throw new Exception("no term version returned from id");
+        }
+
+        if (!termVersion.getAccount().getUsername().equals(username)) {
+            throw new Exception("wrong user");
+        }
+
+        if (!(termVersion.getTerm().getName().equals(name))) {
+            throw new Exception("The term version doesnt match the term");
+        }
+
+        termVersion.setShortDef(requestBody.getShortDef());
+        termVersion.setLongDef(requestBody.getLongDef());
+        termVersion.setCodeSnippet(requestBody.getCodeSnippet());
+        termVersion.setExampleUsage(requestBody.getExampleUsage());
+        termVersionRepository.save(termVersion);
+    }
 }

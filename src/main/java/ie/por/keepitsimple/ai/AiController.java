@@ -16,17 +16,17 @@ public class AiController {
     @Autowired
     private AiService aiService;
 
-    @GetMapping("generate-term")
+    @GetMapping("/generate-term")
     public TermVersion generateTermVersion(@RequestParam String term) {
         return aiService.generateTermVersion(term);
     }
 
-    @GetMapping("check-term")
+    @GetMapping("/check-term")
     public boolean checkTerm(@RequestParam String term) {
         return aiService.checkTerm(term);
     }
 
-    @GetMapping("generate-term-category")
+    @GetMapping("/generate-term-category")
     public String generateTermCategory(@RequestParam String term) {
         return aiService.generateTermCategory(term);
     }
