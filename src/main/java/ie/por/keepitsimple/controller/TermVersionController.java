@@ -23,14 +23,14 @@ public class TermVersionController {
 
     @PutMapping(value="/termversion/{id}/update")
     public void updateTermVersion(@RequestBody AddTermVersionReqBody requestBody, @PathVariable Long id, @PathVariable String name) throws Exception {
-//        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        termVersionService.updateTermVersion(requestBody, name, id);
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        termVersionService.updateTermVersion(requestBody, id, name, username);
     }
 
     @DeleteMapping(value="/termversion/{id}/delete")
     public void deleteTermVersion(@PathVariable String name, @PathVariable Long id) throws Exception {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        termVersionService.deleteTermVersion(id, username, name);
+        termVersionService.deleteTermVersion(id, name, username);
     }
 
 

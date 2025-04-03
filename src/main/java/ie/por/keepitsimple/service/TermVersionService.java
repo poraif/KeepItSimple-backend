@@ -36,16 +36,16 @@ public class TermVersionService {
         termVersionRepository.save(termVersion);
     }
 
-    public void updateTermVersion(AddTermVersionReqBody requestBody, String name, Long id) throws Exception {
+    public void updateTermVersion(AddTermVersionReqBody requestBody, Long id, String name, String username) throws Exception {
         TermVersion termVersion = termVersionRepository.getTermVersionById(id);
         System.out.println(termVersion);
         if (termVersion == null) {
             throw new Exception("no term version returned from id");
         }
 
-//        if (!termVersion.getAccount().getUsername().equals(username)) {
-//            throw new Exception("wrong user");
-//        }
+        if (!termVersion.getAccount().getUsername().equals(username)) {
+            throw new Exception("wrong user");
+        }
 
         if (!(termVersion.getTerm().getName().equals(name))) {
             throw new Exception("The term version doesnt match the term");
@@ -59,25 +59,27 @@ public class TermVersionService {
     }
 
     @Transactional
-    public void deleteTermVersion(Long id, String username, String name) throws Exception {
+    public void deleteTermVersion(Long id, String name, String username) throws Exception {
         TermVersion termVersion = termVersionRepository.getTermVersionById(id);
-        Term term = termService.findTermByName(name);
+        Term term = termVersion.getTerm();
+
         if (termVersion == null) {
-            throw new Exception("no term version returned from id");
+            throw new Exception("No term version returned from id");
         }
-        if (!termVersion.getAccount().getUsername().equals(username)) {
-            throw new Exception("wrong user - not authorised to delete");
+
+        if (!term.getName().equals(name)) {
+            throw new Exception("The term version doesn't match the term");
         }
-        if (!(termVersion.getTerm().getName().equals(name))) {
-            throw new Exception("The term version doesnt match the term");
+
+        if (termVersion.getAccount().getUsername().equals(username)) {
+            throw new Exception("invalid user");
         }
-        termVersionRepository.flush();
-        termVersionRepository.delete(termVersion);
-        Optional<TermVersion> newTermVersion = termVersionRepository.findTermVersionByTermAndHighestVote(name);
-        if (newTermVersion.isPresent()) {
-            term.setCurrentVersion(newTermVersion.get());
+
+        if (term.getCurrentVersion().equals(termVersion)) {
+            term.setCurrentVersion(null);
             termRepository.save(term);
         }
 
+        termVersionRepository.delete(termVersion);
     }
 }
