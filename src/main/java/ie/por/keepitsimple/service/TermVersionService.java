@@ -82,4 +82,8 @@ public class TermVersionService {
 
         termVersionRepository.delete(termVersion);
     }
+
+    TermVersion findTermVersionById(Long id) {
+        termVersionRepository.findById(id);
+    }
 }
