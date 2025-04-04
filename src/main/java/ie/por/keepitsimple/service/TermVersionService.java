@@ -84,6 +84,10 @@ public class TermVersionService {
     }
 
     TermVersion findTermVersionById(Long id) {
-        termVersionRepository.findById(id);
+        Optional<TermVersion> termVersion = termVersionRepository.findById(id);
+        if (termVersion.isPresent()) {
+            return termVersion.get();
+        }
+        return null;
     }
 }

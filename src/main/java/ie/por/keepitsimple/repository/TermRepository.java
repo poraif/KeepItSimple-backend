@@ -25,7 +25,7 @@ public interface TermRepository extends JpaRepository<Term, Long> {
     termVersion.id as id
     from Term term
     join term.currentVersion termVersion
-    join termVersion.account account
+    left join termVersion.account account
     where termVersion.approved = true
     and term.name = :name
     """)

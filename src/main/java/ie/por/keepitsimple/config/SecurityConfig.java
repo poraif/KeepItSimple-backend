@@ -70,7 +70,7 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/account/login", "/api/account/signup", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/api/term/search**", "/api/term/search*", "/api/term/search/**", "/api/term/search","/api/term/search/","/api/term/{name}/**").permitAll()
-                        .requestMatchers("/api/term/terms", "/api/ai/**", "/api/term/add", "api/term/addtermandversion").hasAnyRole("ADMIN", "EDITOR", "SUPERUSER")
+                        .requestMatchers("/api/term/terms", "/api/ai/**", "/api/term/add", "api/term/addtermandversion", "api/term/{name}/termversion/{id}/vote").hasAnyRole("ADMIN", "EDITOR", "SUPERUSER")
                         .anyRequest().authenticated()
                 );
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
@@ -84,11 +84,8 @@ public class SecurityConfig {
         config.setAllowedOrigins(Arrays.asList("http://localhost:5174",
                                                 "http://localhost:5173",
                                                 "https://keep-it-simple.vercel.app",
-                                                "https://keep-it-simple-frontend.vercel.app",
-                                                "http://keep-it-simple.vercel.app",
-                                                "http://keep-it-simple-frontend.vercel.app",
-                                                "https://keep-it-simple-frontend-7m5wsuznp-peadars-projects.vercel.app/",
-                                                "https://keep-it-simple-frontend-git-main-peadars-projects.vercel.app/"
+                                                "https://keep-it-simple-frontend.vercel.app"
+
                 ));
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(Arrays.asList("*"));

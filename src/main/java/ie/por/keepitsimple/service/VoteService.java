@@ -23,22 +23,21 @@ public class VoteService {
     @Autowired
     private VoteRepository voteRepository;
 
-    private VoteId voteId;
-
     public void addVote(Long id, String username, Integer voteValue) {
-        if (voteValue != null && voteValue == -1 | voteValue == 1) {
+        if (voteValue != null && voteValue == -1 | voteValue == 1 | voteValue == 0) {
             Account account = accountService.findAccountByUsername(username);
-            voteId = new VoteId(id, account.getId());
+            TermVersion termVersion = termVersionService.findTermVersionById(id);
+            VoteId voteId = new VoteId(account.getId(), termVersion.getId());
             Optional<Vote> voteToUpdate = voteRepository.findById(voteId);
             if (voteToUpdate.isPresent()) {
                 voteToUpdate.get().setVoteValue(voteValue);
                 voteRepository.save(voteToUpdate.get());
             } else {
                 Vote vote = new Vote();
-                TermVersion termVersion = termVersionService.findTermVersionById(id);
                 vote.setTermVersion(termVersion);
                 vote.setVoteValue(voteValue);
                 vote.setAccount(account);
+                vote.setId(voteId);
                 voteRepository.save(vote);
             }
         } else {
