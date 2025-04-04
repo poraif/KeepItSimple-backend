@@ -16,6 +16,7 @@ public interface TermRepository extends JpaRepository<Term, Long> {
     @Query("""
     select 
     account.username as username,
+    vote.voteValue as loggedInUserVote,
     term.name as name,
     term.category as category,
     termVersion.shortDef as shortDef,
@@ -26,6 +27,7 @@ public interface TermRepository extends JpaRepository<Term, Long> {
     from Term term
     join term.currentVersion termVersion
     left join termVersion.account account
+    left join Vote vote on vote.termVersion = termVersion and vote.account = account
     where termVersion.approved = true
     and term.name = :name
     """)
