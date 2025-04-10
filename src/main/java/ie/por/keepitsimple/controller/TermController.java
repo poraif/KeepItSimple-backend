@@ -34,10 +34,9 @@ public class TermController {
     }
 
 
-
-    @GetMapping(value="/{id}")
-    public Term getTerm(@PathVariable Long id) {
-        return termService.findTermById(id);
+    @GetMapping(value="/{name}/get")
+    public Term findTermByName(@PathVariable String name) {
+        return termService.findTermByName(name);
     }
 
     @GetMapping(value="/search")
@@ -49,6 +48,7 @@ public class TermController {
     public List<String> getAllTermNames() {
         return termService.getAllTermNames();
     }
+
 
 
 

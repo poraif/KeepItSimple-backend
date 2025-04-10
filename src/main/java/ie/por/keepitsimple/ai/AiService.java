@@ -50,7 +50,11 @@ public class AiService {
 
         MistralAiApi mistralAiApi = new MistralAiApi(apiKey);
 
-        this.chatModel = new MistralAiChatModel(mistralAiApi, MistralAiChatOptions.fromOptions(options), ToolCallingManager.builder().build(), RetryTemplate.defaultInstance(), ObservationRegistry.create());
+        this.chatModel = new MistralAiChatModel(mistralAiApi,
+                MistralAiChatOptions.fromOptions(options),
+                ToolCallingManager.builder().build(),
+                RetryTemplate.defaultInstance(),
+                ObservationRegistry.create());
     }
 
 

@@ -35,8 +35,7 @@ public class Term {
     @JoinColumn(name = "current_version_id", referencedColumnName = "id", nullable = true)
     private TermVersion currentVersion;
 
-    @ManyToMany
-    @JoinTable(name = "contains", joinColumns = @JoinColumn(name = "term_id"), inverseJoinColumns = @JoinColumn(name = "collection_id"))
+    @ManyToMany(mappedBy = "terms")
     private Set<TermCollection> collections;
 
     public Term() {}

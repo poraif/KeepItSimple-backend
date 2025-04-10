@@ -14,6 +14,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Slf4j
 @Service
 public class AccountService {
@@ -61,4 +63,7 @@ public class AccountService {
         return accountRepository.findByUsername(username);
     }
 
+    public Optional<Account> findAccountById(long userId) {
+        return accountRepository.findById(userId);
+    }
 }

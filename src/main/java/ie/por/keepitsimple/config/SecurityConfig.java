@@ -70,7 +70,7 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/account/login", "/api/account/signup", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/api/term/search**", "/api/term/search*", "/api/term/search/**", "/api/term/search","/api/term/search/","/api/term/{name}/**").permitAll()
-                        .requestMatchers("/api/term/terms", "/api/ai/**", "/api/term/add", "api/term/addtermandversion", "api/term/{name}/termversion/{id}/vote").hasAnyRole("ADMIN", "EDITOR", "SUPERUSER")
+                        .requestMatchers("/api/term/terms", "/api/ai/**", "/api/term/add", "/api/term/addtermandversion", "/api/term/{name}/termversion/{id}/vote", "/api/collections/**").hasAnyRole("ADMIN", "EDITOR", "SUPERUSER")
                         .anyRequest().authenticated()
                 );
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);

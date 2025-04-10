@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -32,8 +33,8 @@ public class TermCollection {
     private Account account;
 
     @ManyToMany
-    @JoinTable(name = "contains", joinColumns = @JoinColumn(name = "collection_id"), inverseJoinColumns = @JoinColumn(name = "term_id"))
-    private Set<Term> terms;
+    @JoinTable(name = "contains", joinColumns = @JoinColumn(name = "term_collection_id"), inverseJoinColumns = @JoinColumn(name = "term_id"))
+    private Set<Term> terms = new HashSet<>();
 
     public TermCollection() {}
 
