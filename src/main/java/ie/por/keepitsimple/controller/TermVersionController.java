@@ -18,7 +18,8 @@ public class TermVersionController {
 
     @PostMapping(value="/termversions")
     public void addTermVersion(@RequestBody AddTermVersionReqBody requestBody, @PathVariable String name) {
-        termVersionService.add(requestBody, name);
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        termVersionService.add(requestBody, name, username);
     }
 
     @PutMapping(value="/termversion/{id}/update")

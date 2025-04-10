@@ -33,6 +33,26 @@ public interface TermRepository extends JpaRepository<Term, Long> {
     """)
     TermAndCurrentVersion getTermAndCurrentVersionByName(@Param("name")String name);
 
+    @Query("""
+    select 
+    account.username as username,
+    vote.voteValue as loggedInUserVote,
+    term.name as name,
+    term.category as category,
+    termVersion.shortDef as shortDef,
+    termVersion.longDef as longDef,
+    termVersion.codeSnippet as codeSnippet,
+    termVersion.exampleUsage as exampleUsage,
+    termVersion.id as id
+    from Term term
+    join term.currentVersion termVersion
+    left join termVersion.account account
+    left join Vote vote on vote.termVersion = termVersion and vote.account = account
+    where termVersion.approved = true
+    and term.name = :name
+    """)
+    public List<TermAndCurrentVersion> getUnapprovedVersions();
+
     public Term findTermByName(String name);
 
     @Query("""
