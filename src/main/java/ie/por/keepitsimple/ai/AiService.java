@@ -1,9 +1,7 @@
 package ie.por.keepitsimple.ai;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ie.por.keepitsimple.model.Term;
 import ie.por.keepitsimple.model.TermVersion;
 import ie.por.keepitsimple.repository.TermRepository;
 import io.micrometer.observation.ObservationRegistry;
@@ -15,17 +13,13 @@ import org.springframework.ai.mistralai.MistralAiChatModel;
 import org.springframework.ai.mistralai.MistralAiChatOptions;
 import org.springframework.ai.mistralai.api.MistralAiApi;
 import org.springframework.ai.model.tool.ToolCallingManager;
-import org.springframework.ai.vectorstore.filter.FilterExpressionBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.retry.support.RetryTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
-import org.stringtemplate.v4.ST;
 
 import java.util.Map;
-import java.util.Optional;
 
 @Slf4j
 @Service
