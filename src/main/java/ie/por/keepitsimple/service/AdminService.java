@@ -1,5 +1,6 @@
 package ie.por.keepitsimple.service;
 
+import ie.por.keepitsimple.dto.responsebody.UnapprovedVersionInfo;
 import ie.por.keepitsimple.dto.responsebody.term.TermAndCurrentVersion;
 import ie.por.keepitsimple.repository.TermRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,14 @@ public class AdminService {
     @Autowired
     private TermRepository termRepository;
 
-    public List<TermAndCurrentVersion> getUnapprovedVersions() {
-        return termRepository.getUnapprovedVersions();
-    }
+    public List<UnapprovedVersionInfo> getUnapprovedVersions(String userRole) throws Exception {
+        if (userRole.equals("ROLE_ADMIN")) {
+            List<UnapprovedVersionInfo> unapproved = termRepository.getUnapprovedVersions();
+            System.out.println(unapproved);
+            return unapproved;
+        }
+        else {
+            throw new Exception("User not admin");
+        }
+    };
 }

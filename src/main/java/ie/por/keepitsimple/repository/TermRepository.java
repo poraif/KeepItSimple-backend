@@ -1,5 +1,6 @@
 package ie.por.keepitsimple.repository;
 
+import ie.por.keepitsimple.dto.responsebody.UnapprovedVersionInfo;
 import ie.por.keepitsimple.dto.responsebody.term.TermAndCurrentVersion;
 import ie.por.keepitsimple.model.Term;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -36,24 +37,16 @@ public interface TermRepository extends JpaRepository<Term, Long> {
     @Query("""
     select 
     account.username as username,
-    vote.voteValue as loggedInUserVote,
     term.name as name,
-    term.category as category,
-    termVersion.shortDef as shortDef,
-    termVersion.longDef as longDef,
-    termVersion.codeSnippet as codeSnippet,
-    termVersion.exampleUsage as exampleUsage,
     termVersion.id as id
     from Term term
     join term.currentVersion termVersion
     left join termVersion.account account
-    left join Vote vote on vote.termVersion = termVersion and vote.account = account
-    where termVersion.approved = true
-    and term.name = :name
+    where termVersion.approved = false
     """)
-    public List<TermAndCurrentVersion> getUnapprovedVersions();
+    List<UnapprovedVersionInfo> getUnapprovedVersions();
 
-    public Term findTermByName(String name);
+    Term findTermByName(String name);
 
     @Query("""
     select t.name from Term t order by t.name desc
