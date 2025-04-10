@@ -35,7 +35,6 @@ public class JwtUtil {
         this.secretKey = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
     }
 
-    // Generate JWT token
     public String generateToken(String username) {
         Account account = accountRepository.findByUsername(username);
         String role = "ROLE_" + account.getRole().toUpperCase();
@@ -48,7 +47,6 @@ public class JwtUtil {
                 .compact();
     }
 
-    // Get username from JWT token
     public String getUsernameFromToken(String token) {
         return Jwts.parser()
                 .setSigningKey(secretKey).build()
@@ -57,7 +55,6 @@ public class JwtUtil {
                 .getSubject();
     }
 
-    // Validate JWT token
     public boolean validateJwtToken(String token) {
         try {
             Jwts.parser().setSigningKey(secretKey).build().parseClaimsJws(token);

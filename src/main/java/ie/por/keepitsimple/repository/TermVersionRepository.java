@@ -1,6 +1,5 @@
 package ie.por.keepitsimple.repository;
 
-import ie.por.keepitsimple.dto.requestbody.termversion.AddTermVersionReqBody;
 import ie.por.keepitsimple.dto.responsebody.term.TermAndCurrentVersion;
 import ie.por.keepitsimple.model.TermVersion;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.Optional;
 
 @Repository

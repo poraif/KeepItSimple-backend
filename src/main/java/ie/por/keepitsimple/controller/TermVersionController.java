@@ -33,7 +33,4 @@ public class TermVersionController {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         termVersionService.deleteTermVersion(id, name, username);
     }
-
-
-
 }

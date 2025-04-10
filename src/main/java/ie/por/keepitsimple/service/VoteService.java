@@ -6,7 +6,6 @@ import ie.por.keepitsimple.model.Vote;
 import ie.por.keepitsimple.model.VoteId;
 import ie.por.keepitsimple.repository.VoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;

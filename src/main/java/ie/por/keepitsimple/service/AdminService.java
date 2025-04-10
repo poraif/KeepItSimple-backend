@@ -1,7 +1,6 @@
 package ie.por.keepitsimple.service;
 
 import ie.por.keepitsimple.dto.responsebody.UnapprovedVersionInfo;
-import ie.por.keepitsimple.dto.responsebody.term.TermAndCurrentVersion;
 import ie.por.keepitsimple.repository.TermRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

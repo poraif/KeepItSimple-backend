@@ -1,7 +1,6 @@
 package ie.por.keepitsimple.controller;
 
 import ie.por.keepitsimple.dto.requestbody.term.AddTermAndVersionReqBody;
-import ie.por.keepitsimple.dto.requestbody.termversion.AddTermVersionReqBody;
 import ie.por.keepitsimple.dto.responsebody.term.TermAndCurrentVersion;
 import ie.por.keepitsimple.model.Term;
 import ie.por.keepitsimple.dto.requestbody.term.AddTermReqBody;

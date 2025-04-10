@@ -3,8 +3,6 @@ package ie.por.keepitsimple.controller;
 import ie.por.keepitsimple.dto.requestbody.term.AddTermReqBody;
 import ie.por.keepitsimple.dto.requestbody.termcollection.AddTermCollectionReqBody;
 import ie.por.keepitsimple.dto.responsebody.termcollection.TermCollectionResponseBody;
-import ie.por.keepitsimple.model.Term;
-import ie.por.keepitsimple.model.TermCollection;
 import ie.por.keepitsimple.service.TermCollectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
